@@ -5,6 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\ProgramRepository;
+use App\Repository\CategoryRepository;
 
 class WildController extends AbstractController
 {
@@ -39,6 +40,25 @@ class WildController extends AbstractController
         return $this->render('wild/show.html.twig', [
             'showName' => $showName,
             'program' => $program
+        ]);
+    }
+
+    /**
+     * @Route("/wild/category/{categoryName<[a-z]+>}", defaults={"categoryName" = null}, name="show_category")
+     */
+    public function showByCategory(string $categoryName, CategoryRepository $categoryRepository, ProgramRepository $programRepository)
+    {
+        $category = $categoryRepository->findBy(['name' => mb_strtolower($categoryName)]);
+
+        $programs = $programRepository->findBy(
+          ['category' => $category],
+          ['id' => 'DESC'],
+          3
+        );
+
+        return $this->render('wild/category.html.twig', [
+          'programs' => $programs,
+          'categoryName' => ucwords($categoryName)
         ]);
     }
 }
