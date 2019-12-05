@@ -4,8 +4,11 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+
 use App\Repository\ProgramRepository;
 use App\Repository\CategoryRepository;
+use App\Repository\SeasonRepository;
+
 
 class WildController extends AbstractController
 {
@@ -48,7 +51,7 @@ class WildController extends AbstractController
      */
     public function showByCategory(string $categoryName, CategoryRepository $categoryRepository, ProgramRepository $programRepository)
     {
-        $category = $categoryRepository->findBy(['name' => mb_strtolower($categoryName)]);
+        $category = $categoryRepository->findOneBy(['name' => mb_strtolower($categoryName)]);
 
         $programs = $programRepository->findBy(
           ['category' => $category],
@@ -59,6 +62,36 @@ class WildController extends AbstractController
         return $this->render('wild/category.html.twig', [
           'programs' => $programs,
           'categoryName' => ucwords($categoryName)
+        ]);
+    }
+
+    /**
+    * @Route("/wild/program/{programName<[a-z0-9-]+>}", defaults={"programName" = null}, name="show_program")
+    */
+
+    public function showByProgram(string $programName, programRepository $programRepository)
+    { 
+      $program = $programRepository->findOneBy(['title' => str_replace('-', ' ',$programName)]);
+      $seasons = $program->getSeasons();
+
+      return $this->render('wild/program.html.twig', [
+        'program' => $program,
+        'seasons' => $seasons
+      ]);
+    }
+    /**
+     * @Route("/wild/season/{seasonId<[0-9]+>}", defaults={"programName" = null}, name="show_season")
+     */
+    public function showBySeason(int $seasonId, SeasonRepository $seasonRepository)
+    {
+      $season = $seasonRepository->findOneById($seasonId);
+      $program = $season->getProgram();
+      $episodes = $season->getEpisodes();
+      
+      return $this->render('wild/season.html.twig', [
+        'program' => $program,
+        'season' => $season,
+        'episodes' => $episodes
         ]);
     }
 }
