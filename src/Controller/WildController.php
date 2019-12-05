@@ -66,7 +66,7 @@ class WildController extends AbstractController
     }
 
     /**
-    * @Route("/wild/program/{programName<[a-z0-9-]+>}", defaults={"programName" = null}, name="show_program")
+    * @Route("/wild/series/{programName<[a-z0-9-]+>}", defaults={"programName" = null}, name="show_program")
     */
 
     public function showByProgram(string $programName, programRepository $programRepository)
@@ -87,7 +87,7 @@ class WildController extends AbstractController
       $season = $seasonRepository->findOneById($seasonId);
       $program = $season->getProgram();
       $episodes = $season->getEpisodes();
-      
+
       return $this->render('wild/season.html.twig', [
         'program' => $program,
         'season' => $season,

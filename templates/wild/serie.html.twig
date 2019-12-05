@@ -1,13 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}All programs{% endblock %}
+{% block title %}Bon Choix !{% endblock %}
 
 {% block body %}
     <h1>Toutes nos séries : </h1>
-    {% for program in programs %}
+    {% for seasons in programs %}
         <div>
-            <h2>{{ loop.index }} / {{ program.title }} - Catégorie : {{ program.category.name }}</h2>
-            <p>{{ program.summary }}</p>
+            <p>{{ seasons.id }}</p>
         </div>
     {% else %}
         Aucune série trouvée.

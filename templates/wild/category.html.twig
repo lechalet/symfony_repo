@@ -1,11 +1,21 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
-    <h1>Toutes les séries de la catégorie « {{ categoryName }} » : </h1>
-    {% for program in programs %}
-        <div>
-            <h2>{{ loop.index }} / {{ program.title }}</h2>
-            <p>{{ program.summary }}</p>
-        </div>
-    {% endfor %}
+{% block category %}
+    <section class="container-fluid media">
+            <h2 class="mt-0">Catégorie : {{ categoryName }}</h2>
+            {% for program in programs %}
+            <div class="mt-5 px-3">
+                <div class="card mb-3 pt-3 col-xl-8 mx-auto">
+                    <img class="align-self-start card-img-top mb-3" src="{{program.poster}}" alt="{{ program.title }} poster">
+                    <div class="container-fluid">
+                        <h2 class="mt-0">{{ program.title }}</h2>
+                        <p class="progsize">{{ program.summary }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+    </section>
+    <a href="{{ path('wild_index') }}" class="retour">
+        Retour à l'accueil
+    </a>
 {% endblock %}
