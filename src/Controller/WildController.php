@@ -4,11 +4,18 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use Doctrine\Common\Collections\ArrayCollection;
+
 
 use App\Repository\ProgramRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\SeasonRepository;
+use App\Repository\EpisodeRepository;
 
+use App\Entity\Category;
+use App\Entity\Episode;
+use App\Entity\Season;
+use App\Entity\Program;
 
 class WildController extends AbstractController
 {
@@ -92,6 +99,23 @@ class WildController extends AbstractController
         'program' => $program,
         'season' => $season,
         'episodes' => $episodes
+        ]);
+    }
+
+    /**
+     * @Route("/wild/episode/{id}", defaults={"episodeName" = null}, name="show_episode")
+     * 
+     */
+    public function showByEpisode(Episode $episode)
+    {
+        $season = $episode->getSeason();
+        $program = $season->getProgram();
+        $hyphenizedProgramTitle = strtolower(str_replace(' ', '-', $program->getTitle()));
+        return $this->render('wild/episode.html.twig', [
+            'episode' => $episode,
+            'season' => $season,
+            'program' => $program,
+            'hyphenizedProgramTitle' => $hyphenizedProgramTitle
         ]);
     }
 }

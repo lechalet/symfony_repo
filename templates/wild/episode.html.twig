@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<section class="container-fluid media">
+    
+    
+    <div class="mt-5 px-3">
+        <div class="card mb-3 pt-3 col-xl-8 mx-auto">
+            <h1></h1>
+            <h2 class="mt-0">{{ episode.title }}</h2>
+            <p>{{ episode.synopsis }}</p>
+            <a href="{{ path('show_season', { seasonId: season.id }) }}">lien vers la saison associé</a>
+            <a href="{{ path('show_program', {programName: hyphenizedProgramTitle}) }}">lien vers le programme associé</a>
+
+            </br>
+            
+        </div>
+    </div>
+</section>
+{% endblock %}
